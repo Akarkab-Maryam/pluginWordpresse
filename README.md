@@ -112,6 +112,11 @@ Stage pré-embauche – Développeuse AI & Process Automation
 ## 📄 Licence
 Projet interne / démonstration professionnelle
 
+<img width="1949" height="1129" alt="image" src="https://github.com/user-attachments/assets/5774873d-ec4a-45bc-b7cf-d8534b7f8732" />
+
+<img width="1082" height="512" alt="image" src="https://github.com/user-attachments/assets/808a990a-27d1-4af8-8197-f58a2eb2e30a" />
+
+<img width="1578" height="608" alt="image" src="https://github.com/user-attachments/assets/b439ceee-2ac2-4a46-9113-6324d74a410f" />
 
 
 
