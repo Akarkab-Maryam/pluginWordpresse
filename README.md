@@ -118,6 +118,9 @@ Projet interne / démonstration professionnelle
 
 <img width="1578" height="608" alt="image" src="https://github.com/user-attachments/assets/b439ceee-2ac2-4a46-9113-6324d74a410f" />
 
+<img width="1498" height="715" alt="image" src="https://github.com/user-attachments/assets/5066ee19-c943-450f-881d-c29c7e55bd99" />
+
+
 
 
 
