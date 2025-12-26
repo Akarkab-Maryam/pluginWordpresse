@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+</head>
+<body style="font-family: Arial, sans-serif; padding: 20px; background-color: #f5f5f5;">
+    <div style="max-width: 600px; margin: 0 auto; background-color: #ffffff; padding: 30px; border-radius: 10px;">
+        <h1 style="color: #0073aa; margin-bottom: 20px;">Rapport Salesforce</h1>
+        
+        <p>Bonjour,</p>
+        
+        <p>Veuillez trouver ci-joint votre rapport Salesforce.</p>
+        
+        <div style="background-color: #f9f9f9; padding: 15px; border-radius: 5px; margin: 20px 0;">
+            <h3 style="margin-top: 0; color: #333;">Informations du rapport</h3>
+            <p><strong>Date de génération :</strong> {{ date }}</p>
+            <p><strong>Nombre de lignes :</strong> {{ rowCount }}</p>
+            <p><strong>Nom du fichier :</strong> {{ filename }}</p>
+        </div>
+        
+        <p>Cordialement,<br>Plugin Maryam</p>
+        
+        <hr style="border: none; border-top: 1px solid #eee; margin: 20px 0;">
+        
+        <p style="font-size: 12px; color: #999;">
+            Cet email a été envoyé automatiquement par {{ siteName }}.
+        </p>
+    </div>
+</body>
+</html>

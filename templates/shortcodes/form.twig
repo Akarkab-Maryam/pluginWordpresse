@@ -1,0 +1,29 @@
+<div class="my-plugin-form {{ class }}">
+    <form class="plugin-form" method="post" data-action="{{ action }}">
+        <input type="hidden" name="nonce" value="{{ nonce }}" />
+        <input type="hidden" name="action" value="my_plugin_form_submit" />
+        
+        <div class="form-group">
+            <label for="plugin_name">Nom :</label>
+            <input type="text" id="plugin_name" name="name" required />
+        </div>
+        
+        <div class="form-group">
+            <label for="plugin_email">Email :</label>
+            <input type="email" id="plugin_email" name="email" required />
+        </div>
+        
+        <div class="form-group">
+            <label for="plugin_message">Message :</label>
+            <textarea id="plugin_message" name="message" rows="4"></textarea>
+        </div>
+        
+        <div class="form-actions">
+            <button type="submit" class="btn-submit">Envoyer</button>
+        </div>
+        
+        {% if redirect %}
+            <input type="hidden" name="redirect_url" value="{{ redirect }}" />
+        {% endif %}
+    </form>
+</div>

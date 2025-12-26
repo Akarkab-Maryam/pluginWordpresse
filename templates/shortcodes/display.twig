@@ -1,0 +1,21 @@
+<div class="my-plugin-display {{ class }}">
+    <div class="display-header">
+        <h3>Affichage {{ type }}</h3>
+    </div>
+    
+    <div class="display-content">
+        {% if items|length > 0 %}
+            <ul class="plugin-items">
+                {% for item in items %}
+                    <li class="plugin-item">
+                        <h4>{{ item.title }}</h4>
+                        <p>{{ item.description }}</p>
+                        <span class="item-date">{{ item.date }}</span>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p class="no-items">Aucun élément à afficher</p>
+        {% endif %}
+    </div>
+</div>

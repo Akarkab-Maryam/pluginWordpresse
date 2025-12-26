@@ -1,0 +1,45 @@
+# ============================================
+# NE PAS DÉPOSER SUR GIT
+# ============================================
+
+# Cache Twig - NE PAS DÉPOSER
+cache/
+
+# Logs - NE PAS DÉPOSER
+logs/
+*.log
+error_log
+debug.log
+
+# ============================================
+# WINDOWS 10
+# ============================================
+
+# Vignettes d'images
+Thumbs.db
+ehthumbs.db
+ehthumbs_vista.db
+
+# Fichier de configuration de dossier
+[Dd]esktop.ini
+
+# Corbeille Windows
+$RECYCLE.BIN/
+
+# Fichiers système Windows
+*.stackdump
+
+# ============================================
+# VS CODE
+# ============================================
+
+# Paramètres de l'éditeur
+.vscode/
+*.code-workspace
+
+
+
+# ============================================
+# FICHIERS SENSIBLES - CREDENTIALS
+# ============================================
+src/Services/EmailService.php

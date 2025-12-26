@@ -1,0 +1,39 @@
+/* plugin-style.css */
+
+/* Style général des boutons */
+.my-plugin-btn {
+    display: inline-block;        /* Pour aligner correctement */
+    padding: 10px 20px;           /* Hauteur et largeur internes */
+    font-size: 14px;              /* Taille du texte */
+    font-weight: 600;
+    text-align: center;
+    text-decoration: none;
+    color: #fff;                  /* Couleur du texte */
+    background-color: #0073aa;    /* Couleur bleu WordPress */
+    border: 1px solid #006799;   /* Bordure du bouton */
+    border-radius: 4px;           /* Coins arrondis */
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-width: 220px;             /* Largeur minimum pour uniformiser */
+}
+
+/* Effet hover */
+.my-plugin-btn:hover {
+    background-color: #006799;
+    border-color: #005f80;
+}
+
+/* Pour les boutons désactivés */
+.my-plugin-btn:disabled {
+    background-color: #ccc;
+    border-color: #999;
+    cursor: not-allowed;
+}
+
+/* Alignement des boutons dans un conteneur */
+.my-plugin-btn-container {
+    display: flex;
+    gap: 10px;        /* Espacement entre les boutons */
+    flex-wrap: wrap;  /* Pour que les boutons passent à la ligne si nécessaire */
+    align-items: center;
+}

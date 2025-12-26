@@ -1,0 +1,213 @@
+<div class="wrap">
+
+    <!-- Header du Dashboard -->
+    <div class="dashboard-header">
+        <h1>🔌 Plugin Maryam - Dashboard</h1>
+        <p class="dashboard-description">Gérez votre connexion Salesforce et vos rapports</p>
+    </div>
+
+    {% if success_message %}
+        <div class="notice notice-success is-dismissible">
+            <p><strong>{{ success_message }}</strong></p>
+        </div>
+    {% endif %}
+
+    <!-- Widgets Statistiques -->
+    <div class="dashboard-widgets">
+        <div class="widget-card widget-{{ connection_status|default('unknown') }}">
+            <span class="widget-icon">🔗</span>
+            <div class="widget-content">
+                <span class="widget-value">{{ connection_status_label|default('Non testé') }}</span>
+                <span class="widget-label">Statut Connexion</span>
+            </div>
+        </div>
+
+        <div class="widget-card">
+            <span class="widget-icon">📅</span>
+            <div class="widget-content">
+                <span class="widget-value">{{ last_report_date|default('Aucun') }}</span>
+                <span class="widget-label">Dernier Rapport</span>
+            </div>
+        </div>
+
+        <div class="widget-card">
+            <span class="widget-icon">📊</span>
+            <div class="widget-content">
+                <span class="widget-value">{{ total_reports|default('0') }}</span>
+                <span class="widget-label">Rapports Générés</span>
+            </div>
+        </div>
+
+        <div class="widget-card">
+            <span class="widget-icon">✅</span>
+            <div class="widget-content">
+                <span class="widget-value">{{ total_connections|default('0') }}</span>
+                <span class="widget-label">Connexions Réussies</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Configuration Salesforce -->
+    <div class="postbox" style="max-width: 900px;">
+        <center>
+            <h2 class="hndle">
+                <span>Configuration Salesforce</span>
+            </h2>
+        </center>
+
+        <div class="inside">
+            <form method="post" action="{{ admin_url }}admin-post.php">
+                <input type="hidden" name="action" value="save_my_plugin_settings" />
+                {{ nonce_field|raw }}
+
+                <!-- Credentials API -->
+                <div class="config-group">
+                    <h3 class="config-group-title">🔐 Credentials API</h3>
+                </div>
+
+                <table class="form-table">
+                    <tr>
+                        <th scope="row">Instance</th>
+                        <td>
+                            <input type="text"
+                                   name="my_plugin_settings[instance]"
+                                   value="{{ settings.instance|default('') }}"
+                                   class="regular-text" />
+                            <p class="description">Nom de l'instance Salesforce</p>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th scope="row">Client ID</th>
+                        <td>
+                            <input type="text"
+                                   name="my_plugin_settings[client_id]"
+                                   value="{{ settings.client_id|default('') }}"
+                                   class="regular-text" />
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th scope="row">Client Secret</th>
+                        <td>
+                            <input type="password"
+                                   name="my_plugin_settings[client_secret]"
+                                   value="{{ settings.client_secret|default('') }}"
+                                   class="regular-text" />
+                        </td>
+                    </tr>
+                </table>
+
+                <!-- Authentification Utilisateur -->
+                <div class="config-group">
+                    <h3 class="config-group-title">👤 Authentification Utilisateur</h3>
+                </div>
+
+                <table class="form-table">
+                    <tr>
+                        <th scope="row">Username</th>
+                        <td>
+                            <input type="text"
+                                   name="my_plugin_settings[User_namme]"
+                                   value="{{ settings.User_namme|default('') }}"
+                                   class="regular-text" />
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th scope="row">Password</th>
+                        <td>
+                            <input type="password"
+                                   name="my_plugin_settings[pass]"
+                                   value="{{ settings.pass|default('') }}"
+                                   class="regular-text" />
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th scope="row">User Secret</th>
+                        <td>
+                            <input type="text"
+                                   name="my_plugin_settings[UserSecret]"
+                                   value="{{ settings.UserSecret|default('') }}"
+                                   class="regular-text" />
+                        </td>
+                    </tr>
+                </table>
+
+                <!-- Configuration Rapport -->
+                <div class="config-group">
+                    <h3 class="config-group-title">📄 Configuration Rapport</h3>
+                </div>
+
+                <table class="form-table">
+                    <tr>
+                        <th scope="row">Report ID</th>
+                        <td>
+                            <input type="text"
+                                   name="my_plugin_settings[report_id]"
+                                   value="{{ settings.report_id|default('') }}"
+                                   class="regular-text" />
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <th scope="row">Host URL</th>
+                        <td>
+                            <input type="text"
+                                   name="my_plugin_settings[HostUrl]"
+                                   value="{{ settings.HostUrl|default('') }}"
+                                   class="regular-text" />
+                        </td>
+                    </tr>
+                </table>
+
+                <hr>
+
+                <!-- Conteneur des 3 boutons alignés -->
+                <div class="my-plugin-buttons-row">
+                    <input type="submit"
+                           class="button button-primary my-plugin-btn"
+                           value="Enregistrer les paramètres">
+
+                    <div class="my-plugin-btn-container">
+                        <button type="button"
+                                class="button button-primary my-plugin-btn ajax-action"
+                                data-action="test_salesforce_connection">
+                            Connexion Salesforce
+                        </button>
+                        <span class="ajax-result"></span>
+                    </div>
+
+                    <div class="my-plugin-btn-container">
+                        <button type="button"
+                                class="button button-primary my-plugin-btn ajax-action"
+                                data-action="download_salesforce_report"
+                                id="download-report-btn">
+                            Télécharger le rapport
+                        </button>
+                        <span class="download-result"></span>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+    <!-- Section Aide -->
+    <div class="dashboard-section dashboard-help">
+        <div class="section-header">
+            <h2 class="section-title">❓ Aide & Documentation</h2>
+        </div>
+        <div class="section-content">
+            <ul class="help-list">
+                <li>📖 <strong>Instance</strong> : Nom de votre organisation Salesforce</li>
+                <li>🔑 <strong>Client ID & Secret</strong> : Obtenus depuis Salesforce Connected App</li>
+                <li>👤 <strong>Username</strong> : Votre email Salesforce</li>
+                <li>🔒 <strong>User Secret</strong> : Token de sécurité Salesforce</li>
+                <li>📊 <strong>Report ID</strong> : ID du rapport à télécharger</li>
+            </ul>
+        </div>
+    </div>
+
+</div>

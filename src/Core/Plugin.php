@@ -1,0 +1,50 @@
+<?php
+
+namespace MyPlugin\Core;
+
+use MyPlugin\Admin\AdminController;
+use MyPlugin\Frontend\FrontendController;
+use MyPlugin\Shortcodes\ShortcodeManager;
+use MyPlugin\Services\Logger;
+use MyPlugin\Services\TwigService;
+
+class Plugin
+{
+    private static $instance = null;
+    private $logger;
+    private $twig;
+
+    public static function getInstance()
+    {
+        if (self::$instance === null) {
+            self::$instance = new self();
+        }
+        return self::$instance;
+    }
+
+    public function init()
+    {
+        $this->logger = new Logger();
+        $this->twig = new TwigService();
+        
+        if (is_admin()) {
+            new AdminController($this->logger, $this->twig);
+        } else {
+            new FrontendController($this->logger, $this->twig);
+        }
+        
+        new ShortcodeManager($this->logger, $this->twig);
+        
+        $this->logger->info('Plugin initialisé');
+    }
+
+    public static function activate()
+    {
+        // Actions d'activation
+    }
+
+    public static function deactivate()
+    {
+        // Actions de désactivation
+    }
+}
