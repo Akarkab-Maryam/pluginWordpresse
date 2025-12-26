@@ -1,4 +1,121 @@
-# My Plugin WordPress
+# WordPress Automation Plugin – Salesforce Report Integration
+
+## 🧩 Description
+Ce plugin WordPress a été développé pour automatiser un processus métier critique :
+- Enregistrement sécurisé des données utilisateurs
+- Connexion à une API externe (Salesforce)
+- Téléchargement automatique de rapports
+- Envoi d’emails de notification avec pièces jointes
+
+L’objectif principal est de **réduire les tâches manuelles**, **minimiser les erreurs humaines** et **optimiser le temps de traitement**.
+
+---
+
+## 🎯 Problématique métier
+Avant ce plugin :
+- Les utilisateurs saisissaient les données manuellement
+- Les rapports Salesforce étaient téléchargés à la main
+- Les notifications étaient envoyées manuellement
+- Aucune traçabilité centralisée
+
+➡️ Perte de temps, risque d’erreurs, manque d’automatisation.
+
+---
+
+## ✅ Solution apportée
+Ce plugin permet de :
+- Enregistrer les informations utilisateurs dans la base de données WordPress
+- Se connecter à Salesforce via API
+- Télécharger automatiquement les rapports demandés
+- Envoyer un email de notification avec le rapport en pièce jointe
+- Centraliser la gestion dans l’interface d’administration WordPress
+
+---
+
+## 🧠 Fonctionnalités principales
+- 📥 Formulaire sécurisé de saisie des données
+- 🔐 Stockage sécurisé en base de données
+- 🔗 Intégration API Salesforce
+- 📊 Téléchargement automatique de rapports
+- 📧 Envoi automatique d’emails de notification
+- 🛠 Interface d’administration WordPress dédiée
+
+---
+
+## 🏗 Architecture technique
+
+### Backend
+- PHP (Programmation Orientée Objet)
+- WordPress Plugin API
+- Hooks & Actions
+- Sécurisation des formulaires (nonces, sanitization)
+
+### Base de données
+- Utilisation de tables WordPress (`wp_options` ou tables personnalisées)
+- Stockage structuré des données utilisateurs
+
+### Intégration API
+- Connexion à Salesforce via API REST
+- Gestion des erreurs et des réponses API
+- Téléchargement automatisé des fichiers
+
+### Notifications
+- Envoi d’emails via `wp_mail` / PHPMailer
+- Pièces jointes automatiques (rapports)
+
+---
+
+## 🧰 Stack technique
+- PHP (POO)
+- WordPress
+- MySQL
+- Salesforce API
+- PHPMailer
+- HTML / CSS (admin UI)
+
+---
+
+## 🔒 Sécurité
+- Vérification des accès utilisateurs (roles & capabilities)
+- Protection CSRF via nonces
+- Nettoyage et validation des données
+- Accès restreint à l’interface admin
+
+---
+
+## 📈 Résultats obtenus
+- ⏱ Réduction significative du temps de traitement
+- ❌ Diminution des erreurs manuelles
+- 📬 Notifications automatiques fiables
+- 📊 Processus centralisé et traçable
+
+---
+
+## 🚀 Améliorations futures
+- Historique détaillé des exécutions
+- Logs d’erreurs avancés
+- Relance automatique en cas d’échec
+- Ajout d’une couche IA pour :
+  - Résumé automatique des rapports
+  - Détection d’anomalies
+- Authentification OAuth avancée
+
+---
+
+## 👩‍💻 Développé par
+**Maryam Akarkab**  
+Ingénieure en développement informatique & automatisation AI  
+Stage pré-embauche – Développeuse AI & Process Automation
+
+---
+
+## 📄 Licence
+Projet interne / démonstration professionnelle
+
+
+
+
+
 
 Plugin WordPress avec architecture moderne et séparée utilisant Twig pour le templating.
 
@@ -52,4 +169,12 @@ Les logs sont automatiquement générés dans le dossier `logs/plugin.log`
 
 ### Templates Twig
 
-Les templates sont dans le dossier `templates/` et utilisent la syntaxe Twig standard.
+Les templates sont dans le dossier `templates/` et utilisent la syntaxe Twig standard
+
+
+
+
+
+
+
+
