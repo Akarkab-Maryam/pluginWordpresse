@@ -47,151 +47,220 @@
         </div>
     </div>
 
-    <!-- Configuration Salesforce -->
-    <div class="postbox" style="max-width: 900px;">
-        <center>
-            <h2 class="hndle">
-                <span>Configuration Salesforce</span>
-            </h2>
-        </center>
+    <!-- Conteneur principal à 2 colonnes -->
+    <div class="config-container" style="display: flex; gap: 20px; flex-wrap: wrap;">
 
-        <div class="inside">
-            <form method="post" action="{{ admin_url }}admin-post.php">
-                <input type="hidden" name="action" value="save_my_plugin_settings" />
-                {{ nonce_field|raw }}
+        <!-- COLONNE GAUCHE : Configuration Salesforce -->
+        <div class="postbox" style="flex: 1; min-width: 400px;">
+            <center>
+                <h2 class="hndle">
+                    <span>Configuration Salesforce</span>
+                </h2>
+            </center>
 
-                <!-- Credentials API -->
-                <div class="config-group">
-                    <h3 class="config-group-title">🔐 Credentials API</h3>
-                </div>
+            <div class="inside">
+                <form method="post" action="{{ admin_url }}admin-post.php">
+                    <input type="hidden" name="action" value="save_my_plugin_settings" />
+                    {{ nonce_field|raw }}
 
-                <table class="form-table">
-                    <tr>
-                        <th scope="row">Instance</th>
-                        <td>
-                            <input type="text"
-                                   name="my_plugin_settings[instance]"
-                                   value="{{ settings.instance|default('') }}"
-                                   class="regular-text" />
-                            <p class="description">Nom de l'instance Salesforce</p>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <th scope="row">Client ID</th>
-                        <td>
-                            <input type="text"
-                                   name="my_plugin_settings[client_id]"
-                                   value="{{ settings.client_id|default('') }}"
-                                   class="regular-text" />
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <th scope="row">Client Secret</th>
-                        <td>
-                            <input type="password"
-                                   name="my_plugin_settings[client_secret]"
-                                   value="{{ settings.client_secret|default('') }}"
-                                   class="regular-text" />
-                        </td>
-                    </tr>
-                </table>
-
-                <!-- Authentification Utilisateur -->
-                <div class="config-group">
-                    <h3 class="config-group-title">👤 Authentification Utilisateur</h3>
-                </div>
-
-                <table class="form-table">
-                    <tr>
-                        <th scope="row">Username</th>
-                        <td>
-                            <input type="text"
-                                   name="my_plugin_settings[User_namme]"
-                                   value="{{ settings.User_namme|default('') }}"
-                                   class="regular-text" />
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <th scope="row">Password</th>
-                        <td>
-                            <input type="password"
-                                   name="my_plugin_settings[pass]"
-                                   value="{{ settings.pass|default('') }}"
-                                   class="regular-text" />
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <th scope="row">User Secret</th>
-                        <td>
-                            <input type="text"
-                                   name="my_plugin_settings[UserSecret]"
-                                   value="{{ settings.UserSecret|default('') }}"
-                                   class="regular-text" />
-                        </td>
-                    </tr>
-                </table>
-
-                <!-- Configuration Rapport -->
-                <div class="config-group">
-                    <h3 class="config-group-title">📄 Configuration Rapport</h3>
-                </div>
-
-                <table class="form-table">
-                    <tr>
-                        <th scope="row">Report ID</th>
-                        <td>
-                            <input type="text"
-                                   name="my_plugin_settings[report_id]"
-                                   value="{{ settings.report_id|default('') }}"
-                                   class="regular-text" />
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <th scope="row">Host URL</th>
-                        <td>
-                            <input type="text"
-                                   name="my_plugin_settings[HostUrl]"
-                                   value="{{ settings.HostUrl|default('') }}"
-                                   class="regular-text" />
-                        </td>
-                    </tr>
-                </table>
-
-                <hr>
-
-                <!-- Conteneur des 3 boutons alignés -->
-                <div class="my-plugin-buttons-row">
-                    <input type="submit"
-                           class="button button-primary my-plugin-btn"
-                           value="Enregistrer les paramètres">
-
-                    <div class="my-plugin-btn-container">
-                        <button type="button"
-                                class="button button-primary my-plugin-btn ajax-action"
-                                data-action="test_salesforce_connection">
-                            Connexion Salesforce
-                        </button>
-                        <span class="ajax-result"></span>
+                    <!-- Credentials API -->
+                    <div class="config-group">
+                        <h3 class="config-group-title">🔐 Credentials API</h3>
                     </div>
 
-                    <div class="my-plugin-btn-container">
-                        <button type="button"
-                                class="button button-primary my-plugin-btn ajax-action"
-                                data-action="download_salesforce_report"
-                                id="download-report-btn">
-                            Télécharger le rapport
-                        </button>
-                        <span class="download-result"></span>
-                    </div>
-                </div>
+                    <table class="form-table">
+                        <tr>
+                            <th scope="row">Instance</th>
+                            <td>
+                                <input type="text"
+                                       name="my_plugin_settings[instance]"
+                                       value="{{ settings.instance|default('') }}"
+                                       class="regular-text" />
+                                <p class="description">Nom de l'instance Salesforce</p>
+                            </td>
+                        </tr>
 
-            </form>
+                        <tr>
+                            <th scope="row">Client ID</th>
+                            <td>
+                                <input type="text"
+                                       name="my_plugin_settings[client_id]"
+                                       value="{{ settings.client_id|default('') }}"
+                                       class="regular-text" />
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row">Client Secret</th>
+                            <td>
+                                <input type="password"
+                                       name="my_plugin_settings[client_secret]"
+                                       value="{{ settings.client_secret|default('') }}"
+                                       class="regular-text" />
+                            </td>
+                        </tr>
+                    </table>
+
+                    <!-- Authentification Utilisateur -->
+                    <div class="config-group">
+                        <h3 class="config-group-title">👤 Authentification Utilisateur</h3>
+                    </div>
+
+                    <table class="form-table">
+                        <tr>
+                            <th scope="row">Username</th>
+                            <td>
+                                <input type="text"
+                                       name="my_plugin_settings[User_namme]"
+                                       value="{{ settings.User_namme|default('') }}"
+                                       class="regular-text" />
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row">Password</th>
+                            <td>
+                                <input type="password"
+                                       name="my_plugin_settings[pass]"
+                                       value="{{ settings.pass|default('') }}"
+                                       class="regular-text" />
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row">User Secret</th>
+                            <td>
+                                <input type="text"
+                                       name="my_plugin_settings[UserSecret]"
+                                       value="{{ settings.UserSecret|default('') }}"
+                                       class="regular-text" />
+                            </td>
+                        </tr>
+                    </table>
+
+                    <!-- Configuration Rapport -->
+                    <div class="config-group">
+                        <h3 class="config-group-title">📄 Configuration Rapport</h3>
+                    </div>
+
+                    <table class="form-table">
+                        <tr>
+                            <th scope="row">Report ID</th>
+                            <td>
+                                <input type="text"
+                                       name="my_plugin_settings[report_id]"
+                                       value="{{ settings.report_id|default('') }}"
+                                       class="regular-text" />
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row">Host URL</th>
+                            <td>
+                                <input type="text"
+                                       name="my_plugin_settings[HostUrl]"
+                                       value="{{ settings.HostUrl|default('') }}"
+                                       class="regular-text" />
+                            </td>
+                        </tr>
+                    </table>
+
+                    <hr>
+
+                    <!-- Conteneur des 3 boutons alignés -->
+                    <div class="my-plugin-buttons-row">
+                        <input type="submit"
+                               class="button button-primary my-plugin-btn"
+                               value="Enregistrer les paramètres">
+
+                        <div class="my-plugin-btn-container">
+                            <button type="button"
+                                    class="button button-primary my-plugin-btn ajax-action"
+                                    data-action="test_salesforce_connection">
+                                Connexion Salesforce
+                            </button>
+                            <span class="ajax-result"></span>
+                        </div>
+
+                        <div class="my-plugin-btn-container">
+                            <button type="button"
+                                    class="button button-primary my-plugin-btn ajax-action"
+                                    data-action="download_salesforce_report"
+                                    id="download-report-btn">
+                                Télécharger le rapport
+                            </button>
+                            <span class="download-result"></span>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
         </div>
+
+        <!-- COLONNE DROITE : Configuration Gmail API -->
+        <div class="postbox" style="flex: 1; min-width: 400px; height: fit-content;">
+            <center>
+                <h2 class="hndle">
+                    <span>Configuration Gmail API</span>
+                </h2>
+            </center>
+
+            <div class="inside">
+                <form method="post" action="{{ admin_url }}admin-post.php">
+                    <input type="hidden" name="action" value="save_gmail_settings" />
+                    {{ nonce_field|raw }}
+
+                    <div class="config-group">
+                        <h3 class="config-group-title">📧 Credentials Gmail</h3>
+                    </div>
+
+                    <table class="form-table">
+                        <tr>
+                            <th scope="row">Gmail Client ID</th>
+                            <td>
+                                <input type="text"
+                                       name="my_plugin_settings[gmail_client_id]"
+                                       value="{{ settings.gmail_client_id|default('') }}"
+                                       class="regular-text" />
+                                <p class="description">Client ID Google Cloud Console</p>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row">Gmail Client Secret</th>
+                            <td>
+                                <input type="password"
+                                       name="my_plugin_settings[gmail_client_secret]"
+                                       value="{{ settings.gmail_client_secret|default('') }}"
+                                       class="regular-text" />
+                                <p class="description">Client Secret Google Cloud Console</p>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th scope="row">Gmail Refresh Token</th>
+                            <td>
+                                <input type="password"
+                                       name="my_plugin_settings[gmail_refresh_token]"
+                                       value="{{ settings.gmail_refresh_token|default('') }}"
+                                       class="regular-text" />
+                                <p class="description">Refresh Token OAuth2</p>
+                            </td>
+                        </tr>
+                    </table>
+
+                    <hr>
+
+                    <div class="my-plugin-buttons-row">
+                        <input type="submit"
+                               class="button button-primary my-plugin-btn"
+                               value="Enregistrer Gmail">
+                    </div>
+
+                </form>
+            </div>
+        </div>
+
     </div>
 
     <!-- Section Aide -->
@@ -206,8 +275,13 @@
                 <li>👤 <strong>Username</strong> : Votre email Salesforce</li>
                 <li>🔒 <strong>User Secret</strong> : Token de sécurité Salesforce</li>
                 <li>📊 <strong>Report ID</strong> : ID du rapport à télécharger</li>
+                <li>📧 <strong>Gmail API</strong> : Credentials depuis Google Cloud Console</li>
             </ul>
         </div>
     </div>
 
 </div>
+```
+
+---
+

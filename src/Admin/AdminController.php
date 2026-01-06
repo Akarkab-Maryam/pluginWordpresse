@@ -26,6 +26,8 @@ class AdminController
         add_action('admin_post_save_my_plugin_settings', [$this, 'saveSettings']);// hook qui traite le formulaire
         add_action('wp_ajax_test_salesforce_connection',[$this,'testSalesforceConnection']); //Enregistre une action Ajax
         add_action('wp_ajax_download_salesforce_report',[$this,'downloadSalesforceReport']);//hook pour téléchargemment de rapport
+         add_action('admin_post_save_gmail_settings', [$this, 'handleSaveGmailSettings']);
+
     }
 
     public function addAdminMenu() //Ajouter le plugins dans wordpresse
@@ -42,26 +44,39 @@ class AdminController
     }
 
     public function adminPage()// récupéré les valeurs sasie par l'utulisateur
-    {
-        $settings = get_option($this->option_name, [
-            'instance' => '',
-            'client_id' => '',
-            'client_secret' => '',
-            'User_namme' => '',
-            'pass'  =>'',
-            'report_id'=>'',
-            'HostUrl'=>'',
-            'UserSecret'=>'',
+{
+    // Utiliser SalesforceConfig pour lire les données déchiffrées
+    $config = new SalesforceConfig();
+    
+    $settings = [
+        'instance' => $config->getInstance(),
+        'client_id' => $config->getClientID(),
+        'client_secret' => $config->getClientSecret(),
+        'User_namme' => $config->getUsername(),
+        'pass' => $config->getPassword(),
+        'report_id' => $config->getReportId(),
+        'HostUrl' => $config->getHostUrl(),
+        'UserSecret' => $config->getUserSecret(),
+        'gmail_client_id' => $config->getGmailClientId(),
+        'gmail_client_secret' => $config->getGmailClientSecret(),
+        'gmail_refresh_token' => $config->getGmailRefreshToken(),
+   
+    ];
 
-        ]);
+    // Récupérer les statistiques du plugin pour les widgets
+   $stats = get_option('my_plugin_stats');
+  if (!is_array($stats)) {
+    $stats = [];
+ }
+  $stats = array_merge([
+    'total_connections' => 0,
+    'total_reports' => 0,
+    'last_report_date' => '',
+    'last_connection_status' => 'unknown',
+    'successful_connections' => 0
+  ], $stats);
 
-        // Récupérer les statistiques du plugin pour les widgets (stokage des statistique de pluging dans my_plugin_stats )
-        $stats = get_option('my_plugin_stats', [
-            'total_connections' => 0,
-            'total_reports' => 0,
-            'last_report_date' => '',
-            'last_connection_status' => 'unknown'
-        ]);
+  
 
         // Déterminer le label du statut de connexion (Affichage de résultat de conenxion selsforce)
         $connection_status_label = 'Non testé';
@@ -103,17 +118,20 @@ class AdminController
             wp_die('Erreur de sécurité');
         }
 
-        // Récupérer et nettoyer les données
-        $settings = [
-       'instance'     => sanitize_text_field($_POST['my_plugin_settings']['instance'] ?? ''),
-       'client_id'    => sanitize_text_field($_POST['my_plugin_settings']['client_id'] ?? ''),
-       'client_secret'=> sanitize_text_field($_POST['my_plugin_settings']['client_secret'] ?? ''),
-        'User_namme'    => sanitize_text_field($_POST['my_plugin_settings']['User_namme'] ?? ''),
-        'pass'         => sanitize_text_field($_POST['my_plugin_settings']['pass'] ?? ''),
-        'report_id'         => sanitize_text_field($_POST['my_plugin_settings']['report_id'] ?? ''),
-        'HostUrl'         => sanitize_text_field($_POST['my_plugin_settings']['HostUrl'] ?? ''),
-        'UserSecret'         => sanitize_text_field($_POST['my_plugin_settings']['UserSecret'] ?? ''),
-     ];
+     
+     // Récupérer et nettoyer les données
+$config = new \MyPlugin\Models\SalesforceConfig();
+$settings = [
+   'instance'     => $config->encrypt(sanitize_text_field($_POST['my_plugin_settings']['instance'] ?? '')),
+   'client_id'    => $config->encrypt(sanitize_text_field($_POST['my_plugin_settings']['client_id'] ?? '')),
+   'client_secret'=> $config->encrypt(sanitize_text_field($_POST['my_plugin_settings']['client_secret'] ?? '')),
+   'User_namme'   => $config->encrypt(sanitize_text_field($_POST['my_plugin_settings']['User_namme'] ?? '')),
+   'pass'         => $config->encrypt(sanitize_text_field($_POST['my_plugin_settings']['pass'] ?? '')),
+   'report_id'    => $config->encrypt(sanitize_text_field($_POST['my_plugin_settings']['report_id'] ?? '')),
+   'HostUrl'      => $config->encrypt(sanitize_text_field($_POST['my_plugin_settings']['HostUrl'] ?? '')),
+   'UserSecret'   => $config->encrypt(sanitize_text_field($_POST['my_plugin_settings']['UserSecret'] ?? '')),
+    
+];
 
 
         // Enregistrer dans wp_options
@@ -138,6 +156,8 @@ class AdminController
             'ajaxurl' => admin_url('admin-ajax.php') //Transformer les informations php en javascripte 
         ]);
     }
+
+     
     
     //teste de connexion salesforce+envoie des results
     public function testSalesforceConnection()
@@ -148,11 +168,12 @@ class AdminController
                 'message' => 'Permissions insuffisantes'
             ]);
         }
-
+     
         $config = new SalesforceConfig();
         $emailService = new EmailService($this->twig);
         $service = new SalesforceService($config, $emailService);
         $result = $service->testConnection();
+   
 
         // Mettre à jour les statistiques pour les widgets
         $stats = get_option('my_plugin_stats', [
@@ -180,6 +201,11 @@ class AdminController
 
     public function downloadSalesforceReport()
     {
+    
+    
+    if (!current_user_can('manage_options'))
+
+
         if (!current_user_can('manage_options')) {
             wp_send_json([
                 'success' => false,
@@ -222,4 +248,78 @@ class AdminController
         }
      
     }
+
+
+/**
+ * Sauvegarder les credentials Gmail
+ */
+public function handleSaveGmailSettings()
+{
+    // Vérification du nonce pour la sécurité
+    if (!isset($_POST['my_plugin_nonce']) || !wp_verify_nonce($_POST['my_plugin_nonce'], 'save_my_plugin_settings')) {
+        wp_die('❌ Erreur de sécurité');
+    }
+    
+    try {
+        // Récupérer les données du formulaire
+        $gmail_data = $_POST['my_plugin_settings'] ?? [];
+        
+        // Créer l'objet pour encrypter
+        $config = new \MyPlugin\Models\SalesforceConfig();
+        
+        // Récupérer les paramètres existants (pour garder Salesforce intact)
+        $existing_settings = get_option('my_plugin_settings', []);
+        
+        // ✅ CORRECTION : Chiffrer SEULEMENT si les données sont en clair
+        $client_id_raw = sanitize_text_field($gmail_data['gmail_client_id'] ?? '');
+        $client_secret_raw = sanitize_text_field($gmail_data['gmail_client_secret'] ?? '');
+        $refresh_token_raw = sanitize_text_field($gmail_data['gmail_refresh_token'] ?? '');
+        
+        // Mettre à jour UNIQUEMENT Gmail - Ne chiffrer que si non vide
+        if (!empty($client_id_raw)) {
+            $existing_settings['gmail_client_id'] = $config->encrypt($client_id_raw);
+        }
+        
+        if (!empty($client_secret_raw)) {
+            $existing_settings['gmail_client_secret'] = $config->encrypt($client_secret_raw);
+        }
+        
+        if (!empty($refresh_token_raw)) {
+            $existing_settings['gmail_refresh_token'] = $config->encrypt($refresh_token_raw);
+        }
+        
+        // Sauvegarder dans la base de données
+        update_option('my_plugin_settings', $existing_settings);
+        
+        // Logger
+        if (isset($this->logger)) {
+            $this->logger->info('✅ Paramètres Gmail enregistrés');
+        }
+        
+        // Rediriger avec succès
+        wp_redirect(add_query_arg([
+            'page' => 'my-plugin',
+            'settings-updated' => 'true'
+        ], admin_url('admin.php')));
+        exit;
+        
+    } catch (\Exception $e) {
+        // En cas d'erreur
+        if (isset($this->logger)) {
+            $this->logger->error('Erreur Gmail: ' . $e->getMessage());
+        }
+        
+        wp_redirect(add_query_arg([
+            'page' => 'my-plugin',
+            'gmail_error' => '1'
+        ], admin_url('admin.php')));
+        exit;
+    }
+} 
+
+
+
+
+
+
 }
